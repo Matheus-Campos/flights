@@ -16,11 +16,11 @@ defmodule Flights.Bookings.Booking do
     cond do
       String.length(city_origin) == 0 -> build(complete_date, nil, city_destiny, user_id)
       String.length(city_destiny) == 0 -> build(complete_date, city_origin, nil, user_id)
-      true -> create_user(complete_date, city_origin, city_destiny, user_id)
+      true -> create_booking(complete_date, city_origin, city_destiny, user_id)
     end
   end
 
-  defp create_user(complete_date, city_origin, city_destiny, user_id) do
+  defp create_booking(complete_date, city_origin, city_destiny, user_id) do
     with {:ok, _user} <- UserAgent.get(user_id) do
       {:ok, %__MODULE__{
         id: UUID.uuid4(),

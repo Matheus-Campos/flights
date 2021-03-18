@@ -1,14 +1,19 @@
 defmodule Flights.Bookings.CreateTest do
   use ExUnit.Case
 
+  import Flights.Factory
+
   alias Flights.Bookings.Create
+  alias Flights.Users.Agent, as: UserAgent
+  alias Flights.Users.User
 
   describe "call/2" do
     setup do
       Flights.start_agents()
 
-      params = %{name: "Matheus Campos", email: "silva.campos.matheus@gmail.com", cpf: "78945612300"}
-      {:ok, user_id} = Flights.create_user(params)
+      %User{id: user_id} = user = build(:user)
+
+      UserAgent.save(user)
 
       {:ok, user_id: user_id}
     end

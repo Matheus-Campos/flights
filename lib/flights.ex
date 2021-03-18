@@ -1,7 +1,7 @@
 defmodule Flights do
   alias Flights.Users.Agent, as: UserAgent
   alias Flights.Bookings.Agent, as: BookingAgent
-
+  alias Flights.Bookings.Create, as: CreateBooking
   alias Flights.Users.Create, as: CreateUser
 
   def start_agents() do
@@ -10,8 +10,5 @@ defmodule Flights do
   end
 
   defdelegate create_user(params), to: CreateUser, as: :call
-
-  def hello do
-    :world
-  end
+  defdelegate create_booking(user_id, params), to: CreateBooking, as: :call
 end

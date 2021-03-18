@@ -1,16 +1,14 @@
 defmodule Flights.Users.AgentTest do
   use ExUnit.Case
 
+  import Flights.Factory
+
   alias Flights.Users.Agent, as: UserAgent
   alias Flights.Users.User
 
   describe "save/1" do
     test "should save a user" do
-      name = "Matheus Campos"
-      cpf = "78945612300"
-      email = "silva.campos.matheus@gmail.com"
-
-      {:ok, user} = User.build(name, email, cpf)
+      user = build(:user)
 
       UserAgent.start_link(nil)
 
@@ -30,11 +28,7 @@ defmodule Flights.Users.AgentTest do
     end
 
     test "when the user is found, returns the user" do
-      name = "Matheus Campos"
-      cpf = "78945612300"
-      email = "silva.campos.matheus@gmail.com"
-
-      {:ok, %User{id: user_id} = user} = User.build(name, email, cpf)
+      %User{id: user_id} = user = build(:user)
 
       UserAgent.save(user)
 

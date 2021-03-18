@@ -34,7 +34,7 @@ defmodule Flights.Bookings.BookingTest do
 
     test "when city origin is invalid, returns an error", %{user: %User{id: user_id}} do
       complete_date = NaiveDateTime.local_now()
-      city_origin = nil
+      city_origin = ""
       city_destiny = "Gramado"
 
       response = Booking.build(complete_date, city_origin, city_destiny, user_id)

@@ -78,4 +78,32 @@ defmodule FlightsTest do
       assert response == expected_response
     end
   end
+
+  describe "generate_report/3" do
+    test "generate a report from facade" do
+      Flights.start_agents()
+
+      {:ok, from_date} = NaiveDateTime.new(2021, 3, 18, 0, 0, 0)
+      {:ok, to_date} = NaiveDateTime.new(2021, 3, 19, 0, 0, 0)
+
+      %Booking{user_id: user_id1} = booking1 = build(:booking, complete_date: from_date)
+      %Booking{user_id: user_id2} = booking2 = build(:booking, complete_date: to_date)
+      booking3 = build(:booking, complete_date: ~N[2021-03-20 00:00:00])
+
+      BookingAgent.save(booking1)
+      BookingAgent.save(booking2)
+      BookingAgent.save(booking3)
+
+      response = Flights.generate_report(from_date, to_date)
+
+      expected_response = {:ok, "Report generated successfully"}
+
+      assert response == expected_response
+
+      file_content = File.read!("report.csv")
+
+      assert file_content == "#{user_id1},Recife,Gramado,2021-03-18 00:00:00\n" <>
+                             "#{user_id2},Recife,Gramado,2021-03-19 00:00:00\n"
+    end
+  end
 end
